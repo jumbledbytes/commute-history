@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { LoadingIndicator } from "../components";
 import { RouteMap } from "../components";
-import IRoute from "../models/iroute";
+import IRoute from "../../../common/models/iroute";
 import { CommuteRoute } from "../routes";
 import IDatasource from "../datasources/idatasource";
 import ArangoDatasource from "../datasources/arango-datasource";
-import ITravelTime from "../models/itravel-time";
+import ITravelTime from "../../../common/models/itravel-time";
 
 declare var mapkit: any;
 

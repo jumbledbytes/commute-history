@@ -1,5 +1,5 @@
-import IRoute from "../models/iroute";
-import ITravelTime from "../models/itravel-time";
+import IRoute from "../../../common/models/iroute";
+import ITravelTime from "../../../common/models/itravel-time";
 
 interface IDatasource {
   connect(): Promise<boolean>;

@@ -1,0 +1,19 @@
+type Route {
+  _key: String
+  routeName: String
+  origin: String
+  destination: String
+}
+
+type TravelTime {
+  _key: String
+  route: Route
+  travelTime: Int
+  createdAt: String
+}
+
+type Query {
+  travelTimes(routeName: String): [TravelTime]
+  routes: [Route]
+  route(routeName: String): Route
+}

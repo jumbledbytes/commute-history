@@ -1,0 +1,24 @@
+{
+  "name": "data-server",
+  "version": "1.0.0",
+  "main": "src/server.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/server.ts"
+  },
+  "dependencies": {
+    "apollo-server": "^2.3.1",
+    "arangojs": "^6.10.0",
+    "graphql": "^14.0.2",
+    "graphql-tools": "^4.0.3",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/graphql": "^14.0.3",
+    "@types/request": "^2.48.1",
+    "@types/request-promise": "^4.1.42",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  }
+}

@@ -1,7 +1,7 @@
 import { Database } from "arangojs";
 import IDatasource from "./idatasource";
-import IRoute from "../models/iroute";
-import ITravelTime from "../models/itravel-time";
+import IRoute from "../../../common/models/iroute";
+import ITravelTime from "../../../common/models/itravel-time";
 
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";
