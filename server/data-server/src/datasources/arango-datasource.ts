@@ -2,9 +2,9 @@ import { Database } from "arangojs";
 import * as request from "request-promise";
 
 import IDatasource from "./idatasource";
-import IRoute from "../../../common/models/iroute";
-import ITravelTime from "../../../common/models/itravel-time";
-import IArangoDocument from "../../../common/models/arango-document";
+import IRoute from "../../../../common/models/iroute";
+import ITravelTime from "../../../../common/models/itravel-time";
+import IArangoDocument from "../../../../common/models/arango-document";
 
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";

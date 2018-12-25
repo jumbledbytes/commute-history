@@ -1,0 +1,16 @@
+{
+  "name": "commute-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "generate-token": "cd credentials-server && yarn generate-token",
+    "start": "concurrently \"yarn start:credentials\" \"yarn start:data-loader\" \"yarn start:data-server\"",
+    "start:credentials": "cd credentials-server && yarn start",
+    "start:data-loader": "cd data-loader && yarn start",
+    "start:data-server": "cd data-server && yarn start"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

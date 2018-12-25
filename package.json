@@ -1,0 +1,17 @@
+{
+  "name": "commuter-client",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "repository": "jeff@home.littlenorthwestfamily.com:/volume1/git/commute",
+  "author": "Jeff <jeff@jumbledbytes.com>",
+  "license": "MIT",
+  "scripts": {
+    "generate-token": "cd server && yarn generate-token",
+    "start": "concurrently \"yarn start:server\" \"yarn start:client\"",
+    "start:server": "cd server && yarn start",
+    "start:client": "cd client && yarn start"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

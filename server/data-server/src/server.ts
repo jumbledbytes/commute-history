@@ -10,10 +10,11 @@ arangoDatasource.connect().then(
   () => {
     const arangoResolvers = resolvers(arangoDatasource);
     const server = new ApolloServer({ typeDefs, resolvers: arangoResolvers });
+    const port = 5001;
 
     // This `listen` method launches a web-server.  Existing apps
     // can utilize middleware options, which we'll discuss later.
-    server.listen().then((args: any) => {
+    server.listen({ port }).then((args: any) => {
       console.log(`🚀  Server ready at ${args.url}`);
     });
   },
