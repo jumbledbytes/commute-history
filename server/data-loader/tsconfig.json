@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -14,7 +14,6 @@
     "jsx": "preserve",
     "isolatedModules": true
   },
-
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

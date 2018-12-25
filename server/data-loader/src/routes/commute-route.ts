@@ -9,7 +9,7 @@ class CommuteRoute {
   private onRouteAvailable: RouteAvailableCallback;
 
   constructor(
-    private routeName: string,
+    private _routeName: string,
     origin: string,
     destination: string,
     onRouteAvailable: RouteAvailableCallback
@@ -21,10 +21,16 @@ class CommuteRoute {
       requestsAlternateRoutes: false
     };
     this.onRouteAvailable = onRouteAvailable;
-    this.requestRoute();
+    if (_routeName && origin && destination) {
+      this.requestRoute();
+    }
   }
 
-  private requestRoute() {
+  public get routeName() {
+    return this._routeName;
+  }
+
+  public requestRoute() {
     var myDirections = new mapkit.Directions();
     myDirections.route(this.directionsRequest, this.handleDirectionsResponse);
   }

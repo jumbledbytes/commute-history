@@ -20,7 +20,7 @@ interface ITravelTimesControllerState {
 
 class TravelTimesController extends Component<ITravelTimesControllerProps, ITravelTimesControllerState> {
   public static defaultProps = {
-    routeName: "defaultRoute"
+    routeName: ""
   };
 
   constructor(props: ITravelTimesControllerProps) {

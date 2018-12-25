@@ -1,6 +1,8 @@
 .routeMap {
-  width: 300px;
-  height: 300px;
+  max-width: 4000px;
+  max-height: 4000px;
   min-width: 300px;
   min-height: 300px;
+  height: 100%;
+  width: 100%;
 }
