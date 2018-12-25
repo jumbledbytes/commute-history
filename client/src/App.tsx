@@ -9,8 +9,8 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
 import "./App.css";
-import TravelTimesController from "./controllers/travel-times-controller";
 import ApolloDatasource from "./datasources/apollo-datasource";
+import RoutesController from "./controllers/routes-controller";
 
 class App extends Component {
   private datasource: ApolloDatasource;
@@ -23,7 +23,7 @@ class App extends Component {
   public render() {
     return (
       <ApolloProvider client={this.datasource.client}>
-        <TravelTimesController />
+        <RoutesController />
       </ApolloProvider>
     );
   }

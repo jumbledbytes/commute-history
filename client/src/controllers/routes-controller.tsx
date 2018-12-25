@@ -4,7 +4,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 import { LoadingIndicator } from "../components/loading-indicator/loading-indicator";
-import IRoute from "../../../common/models/iroute";
+import CommuteRoutes from "../components/commute-routes/commute-routes";
 
 interface IRoutesControllerProps {}
 
@@ -32,11 +32,7 @@ class RoutesController extends Component<IRoutesControllerProps, IRoutesControll
           if (loading) return <LoadingIndicator />;
           if (error) return <p>Error :(</p>;
 
-          return data.routes.map((route: IRoute) => (
-            <div key={route.routeName}>
-              <p>{`${route.origin}: ${route.destination}`}</p>
-            </div>
-          ));
+          return <CommuteRoutes routes={data.routes} />;
         }}
       </Query>
     );

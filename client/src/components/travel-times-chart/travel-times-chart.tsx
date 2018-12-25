@@ -31,7 +31,7 @@ class TravelTimesChart extends Component<TravelTimesChartProps> {
   }
 
   public render() {
-    return <div id="chartdiv" />;
+    return <div id="chartdiv" className="travelTimesChart" />;
   }
 
   private createChart(): am4charts.XYChart {

@@ -47,11 +47,7 @@ class TravelTimesController extends Component<ITravelTimesControllerProps, ITrav
           if (loading) return <LoadingIndicator />;
           if (error) return <p>Error :(</p>;
 
-          return data.travelTimes.map((travelTime: ITravelTime) => (
-            <div key={travelTime._key}>
-              <p>{`${travelTime.createdAt}: ${travelTime.travelTime}`}</p>
-            </div>
-          ));
+          return <TravelTimesChart travelTimes={data.travelTimes} />;
         }}
       </Query>
     );
