@@ -29,6 +29,7 @@ class ArangoDatasource implements IDatasource {
       this.arangoDb.useDatabase(arangoConfig.database);
       this.arangoDb.useBasicAuth(arangoConfig.username, arangoConfig.password);
     } catch (e) {
+      console.log(e.message);
       return false;
     }
 
@@ -37,7 +38,11 @@ class ArangoDatasource implements IDatasource {
 
   public async getRoutes(): Promise<Array<IRoute>> {
     if (!this.arangoDb) {
-      return [];
+      await this.connect();
+      if (!this.arangoDb) {
+        console.log("Not connected to database");
+        return [];
+      }
     }
     const routeCollection = this.arangoDb.collection(ArangoDatasource.ROUTE_COLLECTION_NAME);
     const routeCursor = await routeCollection.all();
@@ -47,7 +52,11 @@ class ArangoDatasource implements IDatasource {
 
   public async getRoute(routeName: string): Promise<IRoute | undefined> {
     if (!this.arangoDb) {
-      return undefined;
+      await this.connect();
+      if (!this.arangoDb) {
+        console.log("Not connected to database");
+        return undefined;
+      }
     }
     const routeCollection = this.arangoDb.collection(ArangoDatasource.ROUTE_COLLECTION_NAME);
     if (!routeCollection.documentExists(routeName)) {
@@ -56,13 +65,18 @@ class ArangoDatasource implements IDatasource {
     try {
       return await routeCollection.document(routeName);
     } catch (e) {
+      console.log(e.message);
       return undefined;
     }
   }
 
   public async getTravelTimes(routeName: string): Promise<Array<ITravelTime>> {
     if (!this.arangoDb) {
-      return [];
+      await this.connect();
+      if (!this.arangoDb) {
+        console.log("Not connected to database");
+        return [];
+      }
     }
     const routeKey = `${ArangoDatasource.ROUTE_COLLECTION_NAME}/${routeName}`;
     const travelTimesGraph = this.arangoDb.graph("travelTimesGraph");
@@ -84,6 +98,7 @@ class ArangoDatasource implements IDatasource {
         })
         .filter(Boolean);
     } catch (e) {
+      console.log(e.message);
       return [];
     }
   }

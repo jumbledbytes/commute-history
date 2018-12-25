@@ -32,7 +32,7 @@ class RoutesController extends Component<IRoutesControllerProps, IRoutesControll
         {({ loading, error, data }) => {
           if (loading) return <LoadingIndicator />;
           if (error) return <ErrorIndicator message={error.message} />;
-
+          if (!data.routes || !data.routes.length) return <ErrorIndicator message="No routes defined" />;
           return <CommuteRoutes routes={data.routes} />;
         }}
       </Query>
