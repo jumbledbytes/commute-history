@@ -1,7 +1,7 @@
 import ApolloClient from "apollo-boost";
 
 class ApolloDatasource {
-  private defaultServerUrl = "http://localhost:5001/";
+  private defaultServerUrl = "http://localhost:4001/";
   private serverUrl: string;
   private _client: ApolloClient<any>;
 
