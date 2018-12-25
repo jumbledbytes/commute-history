@@ -1,12 +1,12 @@
 import { getCredentials } from "./credentials/get-credentials";
 
+import * as express from "express";
+import { exec } from "child_process";
+
 const mapkitJwtFile = "keys/LittleNorthwestFamilyNavigation.json";
 const arangoCredentialsFile = "keys/commuter-db-credentials.json";
 let mapkitJwt = getCredentials(mapkitJwtFile);
 const arangoCredentials = getCredentials(arangoCredentialsFile);
-
-import * as express from "express";
-import { exec } from "child_process";
 
 const app = express();
 

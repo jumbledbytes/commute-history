@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true
+  },
+  "include": ["*.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

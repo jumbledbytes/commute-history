@@ -5,13 +5,14 @@
   "license": "MIT",
   "scripts": {
     "generate-token": "cd credentials-server && yarn generate-token",
-    "start": "concurrently \"yarn start:credentials\" \"yarn start:data-loader\" \"yarn start:data-server\"",
+    "start": "concurrently \"yarn start:credentials\" \"yarn start:data-loader\" \"yarn start:data-server\" \"yarn start:data-loader:scheduler\"",
     "build:server": "concurrently \"yarn build:credentials\" \"yarn build:data-loader\" \"yarn build:data-server\"",
     "build:credentials": "cd credentials-server && yarn build",
     "build:data-loader": "cd data-loader && yarn build",
     "build:data-server": "cd data-server && yarn build",
     "start:credentials": "cd credentials-server && yarn start",
     "start:data-loader": "cd data-loader && yarn start",
+    "start:data-loader:scheduler": "cd data-loader && yarn scheduler:run",
     "start:data-server": "cd data-server && yarn start"
   },
   "devDependencies": {
