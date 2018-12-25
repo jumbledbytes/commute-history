@@ -52,5 +52,3 @@ tokenJson = json.dumps(token)
 tokenFile = open(jsonFileName, 'w')
 tokenFile.write(tokenJson)
 tokenFile.close()
-
-print(tokenJson)
