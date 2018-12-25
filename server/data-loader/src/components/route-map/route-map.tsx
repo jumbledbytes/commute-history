@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 
 import "./route-map.css";
+import IRoute from "../../../../../common/models/iroute";
 
 declare var mapkit: any;
 
 interface IRouteMapProps {
   accessToken: string;
-  routeName: string;
+  route: IRoute;
 }
 
 class RouteMap extends Component<IRouteMapProps> {
@@ -19,13 +20,13 @@ class RouteMap extends Component<IRouteMapProps> {
   }
 
   public componentDidMount() {
-    const { routeName } = this.props;
-    this.map = new mapkit.Map(routeName, { center: new mapkit.Coordinate(37.334883, -122.008977) });
+    const { route } = this.props;
+    this.map = new mapkit.Map(route.routeName, { center: new mapkit.Coordinate(37.334883, -122.008977) });
   }
 
   public render() {
-    const { routeName } = this.props;
-    return <div id={routeName} className="routeMap" />;
+    const { route } = this.props;
+    return <div id={route.routeName} className="routeMap" />;
   }
 }
 

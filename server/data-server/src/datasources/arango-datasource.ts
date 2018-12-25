@@ -2,16 +2,14 @@ import { Database } from "arangojs";
 import * as request from "request-promise";
 
 import IDatasource from "./idatasource";
-import IRoute from "../../../common/models/iroute";
-import ITravelTime from "../../../common/models/itravel-time";
-import IArangoDocument from "../../../common/models/arango-document";
+import IRoute from "../../../../common/models/iroute";
+import ITravelTime from "../../../../common/models/itravel-time";
+import IArangoDocument from "../../../../common/models/arango-document";
 
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";
-  private static readonly TRAVEL_TIME_COLLECTION_NAME = "travelTimes";
-  private static readonly TRAVEL_TIME_EDGECOLLECTION_NAME = "travelTimeEdges";
 
-  private defaultCredentialsUrl = "http://localhost:5000/credentials";
+  private defaultCredentialsUrl = "http://localhost:4000/credentials";
   private credentialsUrl: string;
   private arangoDb: Database | undefined;
 

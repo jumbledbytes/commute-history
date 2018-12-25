@@ -1,14 +1,14 @@
 import { Database } from "arangojs";
 import IDatasource from "./idatasource";
-import IRoute from "../../../common/models/iroute";
-import ITravelTime from "../../../common/models/itravel-time";
+import IRoute from "../../../../common/models/iroute";
+import ITravelTime from "../../../../common/models/itravel-time";
 
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";
   private static readonly TRAVEL_TIME_COLLECTION_NAME = "travelTimes";
   private static readonly TRAVEL_TIME_EDGECOLLECTION_NAME = "travelTimeEdges";
 
-  private defaultCredentialsUrl = "http://localhost:5000/credentials";
+  private defaultCredentialsUrl = "http://localhost:4000/credentials";
   private credentialsUrl: string;
   private arangoDb: Database | undefined;
 
@@ -34,6 +34,21 @@ class ArangoDatasource implements IDatasource {
     return true;
   }
 
+  public async getRoutes(): Promise<Array<IRoute>> {
+    if (!this.arangoDb) {
+      return [];
+    }
+    const routeCollection = this.arangoDb.collection(ArangoDatasource.ROUTE_COLLECTION_NAME);
+
+    try {
+      const routesCursor = await routeCollection.all();
+      const routes = routesCursor.all();
+      return routes;
+    } catch (e) {
+      return [];
+    }
+  }
+
   public async getRoute(routeName: string): Promise<IRoute | undefined> {
     if (!this.arangoDb) {
       return undefined;
@@ -43,7 +58,8 @@ class ArangoDatasource implements IDatasource {
       return undefined;
     }
     try {
-      return await routeCollection.document(routeName);
+      const route = await routeCollection.document(routeName);
+      return route;
     } catch (e) {
       return undefined;
     }
@@ -64,6 +80,27 @@ class ArangoDatasource implements IDatasource {
       console.error(`Unable to save route: ${newRoute.routeName}`, e.message);
     }
     return savedRoute;
+  }
+
+  public async saveRoute(route: IRoute): Promise<boolean> {
+    if (!this.arangoDb || !route.routeName) {
+      return false;
+    }
+    const routeCollection = this.arangoDb.collection(ArangoDatasource.ROUTE_COLLECTION_NAME);
+    if (!route._key) {
+      route._key = route.routeName;
+    }
+    try {
+      if (routeCollection.documentExists(route.routeName)) {
+        routeCollection.update(route.routeName, route);
+      } else {
+        routeCollection.save(route);
+      }
+    } catch (e) {
+      return false;
+    }
+
+    return true;
   }
 
   public async saveTravelTime(travelTime: ITravelTime): Promise<ITravelTime | undefined> {

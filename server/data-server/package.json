@@ -4,6 +4,7 @@
   "main": "src/server.ts",
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf dist",
     "start": "ts-node src/server.ts"
   },
   "dependencies": {
