@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "concurrently \"cd server && yarn build:server\" \"cd client && yarn build\"",
+    "build:docker": "docker build -t jumbledbytes/commute-history .",
     "generate-token": "cd server && yarn generate-token",
     "load-data": "cd server/data-loader && yarn load-data",
     "start": "concurrently \"yarn start:server\" \"yarn start:client\"",
