@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "PORT=5002 react-scripts start",
+    "start": "PORT=4002 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "load-data": "yarn cypress:run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },

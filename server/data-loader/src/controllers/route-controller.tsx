@@ -23,7 +23,7 @@ interface IRouteControllerState {
 
 class RouteController extends Component<IRouteControllerProps, IRouteControllerState> {
   public static defaultProps = {
-    tokenUrl: "http://localhost:5000/token"
+    tokenUrl: "http://localhost:4000/token"
   };
 
   private commuteRoutes: Array<CommuteRoute>;
@@ -113,6 +113,7 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
             this.handleRouteAvailable(route, error, data);
           }
         );
+        commuteRoute.requestRoute();
         this.commuteRoutes.push(commuteRoute);
         this.setState({ isLoading: false });
       });
