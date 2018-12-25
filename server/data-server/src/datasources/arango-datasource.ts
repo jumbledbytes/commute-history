@@ -8,8 +8,6 @@ import IArangoDocument from "../../../../common/models/arango-document";
 
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";
-  private static readonly TRAVEL_TIME_COLLECTION_NAME = "travelTimes";
-  private static readonly TRAVEL_TIME_EDGECOLLECTION_NAME = "travelTimeEdges";
 
   private defaultCredentialsUrl = "http://localhost:5000/credentials";
   private credentialsUrl: string;

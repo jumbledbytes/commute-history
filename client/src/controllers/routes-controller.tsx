@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 
 import { LoadingIndicator } from "../components/loading-indicator/loading-indicator";
 import CommuteRoutes from "../components/commute-routes/commute-routes";
+import ErrorIndicator from "../components/error-indicator/error-indicator";
 
 interface IRoutesControllerProps {}
 
@@ -30,7 +31,7 @@ class RoutesController extends Component<IRoutesControllerProps, IRoutesControll
       >
         {({ loading, error, data }) => {
           if (loading) return <LoadingIndicator />;
-          if (error) return <p>Error :(</p>;
+          if (error) return <ErrorIndicator message={error.message} />;
 
           return <CommuteRoutes routes={data.routes} />;
         }}

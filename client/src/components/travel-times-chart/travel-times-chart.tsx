@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import moment from "moment";
+
 import ITravelTime from "../../../../common/models/itravel-time";
 
 import "./travel-times-chart.css";
@@ -72,8 +74,8 @@ class TravelTimesChart extends Component<TravelTimesChartProps> {
     const { travelTimes } = this.props;
     chart.data = travelTimes.map(time => {
       return {
-        date: time.createdAt,
-        travelTime: time.travelTime
+        date: moment(time.createdAt).toDate(),
+        travelTime: time.travelTime / 60
       };
     });
   }
