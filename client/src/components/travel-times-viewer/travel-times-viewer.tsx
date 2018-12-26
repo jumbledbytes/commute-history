@@ -32,9 +32,9 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
     const last30Minutes = travelTimes.filter(
       travelTime => travelTime.createdAt.getTime() >= now.getTime() - 1800 * 1000
     );
-    const avg10Mins = last10Minutes.length > 0 ? last10Minutes.reduce(avgReducer).travelTime / last5Minutes.length : 0;
-    const avg20Mins = last20Minutes.length > 0 ? last20Minutes.reduce(avgReducer).travelTime / last10Minutes.length : 0;
-    const avg30Mins = last30Minutes.length > 0 ? last30Minutes.reduce(avgReducer).travelTime / last15Minutes.length : 0;
+    const avg10Mins = last10Minutes.length > 0 ? last10Minutes.reduce(avgReducer).travelTime / last10Minutes.length : 0;
+    const avg20Mins = last20Minutes.length > 0 ? last20Minutes.reduce(avgReducer).travelTime / last20Minutes.length : 0;
+    const avg30Mins = last30Minutes.length > 0 ? last30Minutes.reduce(avgReducer).travelTime / last30Minutes.length : 0;
 
     return (
       <div>
