@@ -53,7 +53,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">35 mins avg: {Math.round(avg30Mins / 60)}</Header>
+              <Header as="h3">30 mins avg: {Math.round(avg30Mins / 60)}</Header>
             </Grid.Column>
           </Grid>
         </div>
