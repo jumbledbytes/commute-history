@@ -23,18 +23,18 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
     };
     const now = new Date();
     const sortedDates = travelTimes.sort((a, b) => (a.createdAt > b.createdAt ? 1 : 0));
-    const last5Minutes = travelTimes.filter(travelTime => travelTime.createdAt.getTime() >= now.getTime() - 300 * 1000);
     const last10Minutes = travelTimes.filter(
       travelTime => travelTime.createdAt.getTime() >= now.getTime() - 600 * 1000
     );
-    const last15Minutes = travelTimes.filter(
-      travelTime => travelTime.createdAt.getTime() >= now.getTime() - 900 * 1000
+    const last20Minutes = travelTimes.filter(
+      travelTime => travelTime.createdAt.getTime() >= now.getTime() - 1200 * 1000
     );
-    const avg5Mins = last5Minutes.length > 0 ? last5Minutes.reduce(avgReducer).travelTime / last5Minutes.length : "N/A";
-    const avg10Mins =
-      last10Minutes.length > 0 ? last10Minutes.reduce(avgReducer).travelTime / last10Minutes.length : "N/A";
-    const avg15Mins =
-      last15Minutes.length > 0 ? last15Minutes.reduce(avgReducer).travelTime / last15Minutes.length : "N/A";
+    const last30Minutes = travelTimes.filter(
+      travelTime => travelTime.createdAt.getTime() >= now.getTime() - 1800 * 1000
+    );
+    const avg10Mins = last10Minutes.length > 0 ? last10Minutes.reduce(avgReducer).travelTime / last5Minutes.length : 0;
+    const avg20Mins = last20Minutes.length > 0 ? last20Minutes.reduce(avgReducer).travelTime / last10Minutes.length : 0;
+    const avg30Mins = last30Minutes.length > 0 ? last30Minutes.reduce(avgReducer).travelTime / last15Minutes.length : 0;
 
     return (
       <div>
@@ -45,15 +45,15 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">5 mins avg: {avg5Mins}</Header>
+              <Header as="h3">10 mins avg: {Math.round(avg10Mins / 60)}</Header>
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">10 mins avg: {avg10Mins}</Header>
+              <Header as="h3">20 mins avg: {Math.round(avg20Mins / 60)}</Header>
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">15 mins avg: {avg15Mins}</Header>
+              <Header as="h3">35 mins avg: {Math.round(avg30Mins / 60)}</Header>
             </Grid.Column>
           </Grid>
         </div>
