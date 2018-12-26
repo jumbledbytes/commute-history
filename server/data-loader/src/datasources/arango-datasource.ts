@@ -114,6 +114,7 @@ class ArangoDatasource implements IDatasource {
       savedTravelTime = await travelTimeCollection.save(travelTime);
       const fromKey = `${ArangoDatasource.ROUTE_COLLECTION_NAME}/${travelTime.routeName}`;
       travelTimeEdgeCollection.save({ _from: fromKey, _to: savedTravelTime._id });
+      console.log(`Saved travel time of ${Math.floor(travelTime.travelTime / 60)} for ${travelTime.routeName}`);
     } catch (e) {
       console.error(`Unable to save travel time for route: ${travelTime.routeName}`, e);
     }
