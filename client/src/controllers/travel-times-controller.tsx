@@ -5,8 +5,9 @@ import gql from "graphql-tag";
 
 import { LoadingIndicator } from "../components/loading-indicator/loading-indicator";
 import IRoute from "../../../common/models/iroute";
+import TravelTimesViewer from "../components/travel-times-viewer/travel-times-viewer";
+import moment from "moment";
 import ITravelTime from "../../../common/models/itravel-time";
-import TravelTimesChart from "../components/travel-times-chart/travel-times-chart";
 
 interface ITravelTimesControllerProps {
   routeName: string;
@@ -46,8 +47,13 @@ class TravelTimesController extends Component<ITravelTimesControllerProps, ITrav
         {({ loading, error, data }) => {
           if (loading) return <LoadingIndicator />;
           if (error) return <p>Error :(</p>;
-
-          return <TravelTimesChart travelTimes={data.travelTimes} />;
+          const convertedTravelTimes = data.travelTimes.map((travelTime: ITravelTime) => {
+            return {
+              ...travelTime,
+              createdAt: moment(travelTime.createdAt).toDate()
+            };
+          });
+          return <TravelTimesViewer travelTimes={convertedTravelTimes} />;
         }}
       </Query>
     );
