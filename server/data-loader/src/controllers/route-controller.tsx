@@ -10,6 +10,7 @@ import IMap from "../components/route-map/imap";
 import AppleMap from "../components/route-map/apple-map/apple-map";
 import MapboxMap from "../components/route-map/mapbox-map/mapbox-map";
 import NullMap from "../components/route-map/null-map/null-map";
+import IDirections from "../types/idirections";
 
 interface IRouteControllerProps {
   mapSource: MapSource;
@@ -24,7 +25,7 @@ interface IRouteControllerState {
 
 class RouteController extends Component<IRouteControllerProps, IRouteControllerState> {
   public static defaultProps = {
-    mapSource: MapSource.Apple,
+    mapSource: MapSource.Mapbox,
     tokenUrl: "http://localhost:4000/token"
   };
 
@@ -126,21 +127,17 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
     this.setState({ isLoading: false });
   }
 
-  private handleDirectionsAvailable = async (route: IRoute, error: any, data: any) => {
+  private handleDirectionsAvailable = async (error: any, data: IDirections) => {
     console.log(data);
-    const routeDocument = await this.datasource.getRoute(route.routeName);
+    const routeDocument = await this.datasource.getRoute(data.route.routeName);
     if (!routeDocument) {
-      const newRoute: IRoute = {
-        routeName: route.routeName,
-        origin: route.origin,
-        destination: route.destination
-      };
-      this.datasource.createRoute(newRoute);
+      this.datasource.createRoute(data.route);
     }
 
     const travelTime: ITravelTime = {
-      routeName: route.routeName,
-      travelTime: data.routes[0].expectedTravelTime,
+      routeName: data.route.routeName,
+      travelTime: data.travelTime,
+      source: this.map.mapName,
       createdAt: new Date()
     };
 

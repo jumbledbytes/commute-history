@@ -3,6 +3,7 @@ import IMapCallbacks from "../imap-callbacks";
 import IRoute from "../../../../../../common/models/iroute";
 import IDirectionsRequest from "../../../types/idirections-request";
 import { callbackify } from "util";
+import IDirections from "../../../types/idirections";
 
 declare var mapkit: any;
 
@@ -42,7 +43,12 @@ class AppleMap implements IMap {
 
   public handleDirectionsResponse = (route: IRoute, error: any, data: any) => {
     if (this.callbacks.onDirectionsAvailable) {
-      this.callbacks.onDirectionsAvailable(route, error, data);
+      const directions: IDirections = {
+        route: route,
+        travelTime: data.routes[0].expectedTravelTime,
+        meta: data
+      };
+      this.callbacks.onDirectionsAvailable(error, directions);
     }
   };
 }
