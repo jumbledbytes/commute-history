@@ -10,6 +10,7 @@ import "./travel-times-chart.css";
 
 interface TravelTimesChartProps {
   travelTimes: Array<ITravelTime>;
+  routeName: string;
 }
 
 class TravelTimesChart extends Component<TravelTimesChartProps> {
@@ -33,11 +34,13 @@ class TravelTimesChart extends Component<TravelTimesChartProps> {
   }
 
   public render() {
-    return <div id="chartdiv" className="travelTimesChart" />;
+    const { routeName } = this.props;
+    return <div id={routeName} className="travelTimesChart" />;
   }
 
   private createChart(): am4charts.XYChart {
-    return am4core.create("chartdiv", am4charts.XYChart);
+    const { routeName } = this.props;
+    return am4core.create(routeName, am4charts.XYChart);
   }
 
   private configureChart(chart: am4charts.XYChart) {

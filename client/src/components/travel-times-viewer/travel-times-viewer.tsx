@@ -32,6 +32,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
         routeName: ""
       });
     }
+    const routeName = sortedDates[0].routeName;
     const last10Minutes = travelTimes.filter(
       travelTime => travelTime.createdAt.getTime() >= now.getTime() - 600 * 1000
     );
@@ -66,7 +67,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
             </Grid.Column>
           </Grid>
         </div>
-        <TravelTimesChart travelTimes={sortedDates} />
+        <TravelTimesChart routeName={routeName} travelTimes={sortedDates} />
       </div>
     );
   }
