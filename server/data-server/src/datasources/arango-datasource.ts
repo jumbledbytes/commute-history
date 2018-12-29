@@ -9,7 +9,7 @@ import IArangoDocument from "../../../../common/models/arango-document";
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";
 
-  private defaultCredentialsUrl = "http://localhost:4000/credentials";
+  private defaultCredentialsUrl = "http://localhost:4000/credentials/arangodb";
   private credentialsUrl: string;
   private arangoDb: Database | undefined;
 

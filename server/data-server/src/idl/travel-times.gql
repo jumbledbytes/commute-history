@@ -8,7 +8,7 @@ type Route {
 type TravelTime {
   _key: String
   route: Route
-  travelTime: Int
+  travelTime: Float
   createdAt: String
 }
 

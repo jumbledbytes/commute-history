@@ -18,6 +18,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
       return {
         createdAt: now,
         travelTime: a.travelTime + b.travelTime,
+        source: a.source,
         routeName: a.routeName
       };
     };
