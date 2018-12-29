@@ -46,7 +46,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
     const avg30Mins = last30Minutes.length > 0 ? last30Minutes.reduce(avgReducer).travelTime / last30Minutes.length : 0;
 
     return (
-      <div>
+      <div style={{ height: "100%" }}>
         <div className="travelTimesGrid">
           <Grid columns="equal">
             <Grid.Column>
@@ -66,7 +66,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
             </Grid.Column>
           </Grid>
         </div>
-        <TravelTimesChart travelTimes={travelTimes} />
+        <TravelTimesChart travelTimes={sortedDates} />
       </div>
     );
   }

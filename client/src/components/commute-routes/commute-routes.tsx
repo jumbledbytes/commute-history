@@ -19,7 +19,7 @@ class CommuteRoutes extends Component<ICommuteRoutesProps> {
     const tabPanes = routes.map(route => {
       return { menuItem: route.routeName, render: () => <TravelTimesController routeName={route.routeName} /> };
     });
-    return <Tab panes={tabPanes} />;
+    return <Tab style={{ height: "90%" }} panes={tabPanes} />;
   }
 }
 

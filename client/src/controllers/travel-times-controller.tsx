@@ -8,6 +8,7 @@ import IRoute from "../../../common/models/iroute";
 import TravelTimesViewer from "../components/travel-times-viewer/travel-times-viewer";
 import moment from "moment";
 import ITravelTime from "../../../common/models/itravel-time";
+import ErrorIndicator from "../components/error-indicator/error-indicator";
 
 interface ITravelTimesControllerProps {
   routeName: string;
@@ -46,7 +47,7 @@ class TravelTimesController extends Component<ITravelTimesControllerProps, ITrav
       >
         {({ loading, error, data }) => {
           if (loading) return <LoadingIndicator />;
-          if (error) return <p>Error :(</p>;
+          if (error) return <ErrorIndicator message={error.message} />;
           const convertedTravelTimes = data.travelTimes.map((travelTime: ITravelTime) => {
             return {
               ...travelTime,
