@@ -8,7 +8,7 @@ class ArangoDatasource implements IDatasource {
   private static readonly TRAVEL_TIME_COLLECTION_NAME = "travelTimes";
   private static readonly TRAVEL_TIME_EDGECOLLECTION_NAME = "travelTimeEdges";
 
-  private defaultCredentialsUrl = "http://localhost:4000/credentials";
+  private defaultCredentialsUrl = "http://localhost:4000/credentials/arangodb";
   private credentialsUrl: string;
   private arangoDb: Database | undefined;
 

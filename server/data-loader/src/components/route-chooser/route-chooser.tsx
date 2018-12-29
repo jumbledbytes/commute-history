@@ -4,37 +4,28 @@ import { Tab } from "semantic-ui-react";
 import IRoute from "../../../../../common/models/iroute";
 import RouteViewer from "../route-viewer/route-viewer";
 import { CommuteRoute } from "../../routes";
+import IMap from "../route-map/imap";
 
 interface IRouteChooserProps {
-  accessToken: string;
+  map: IMap;
   routes: Array<IRoute>;
-  routeHandlers: Array<CommuteRoute>;
   onRouteChanged(route: IRoute): void;
 }
 
 class RouteChooser extends Component<IRouteChooserProps> {
   public static defaultProps = {
     routes: [],
-    routeHandlers: [],
     onRouteChanged: () => undefined
   };
 
   public render() {
-    const { accessToken, onRouteChanged, routes, routeHandlers } = this.props;
+    const { map, onRouteChanged, routes } = this.props;
 
     const tabPanes: Array<any> = [];
     routes.forEach((route, index) => {
-      const routeHandler = routeHandlers[index];
       const pane = {
         menuItem: route.routeName,
-        render: () => (
-          <RouteViewer
-            accessToken={accessToken}
-            route={route}
-            routeHandler={routeHandler}
-            onRouteChanged={onRouteChanged}
-          />
-        )
+        render: () => <RouteViewer map={map} route={route} onRouteChanged={onRouteChanged} />
       };
       tabPanes.push(pane);
     });
@@ -45,14 +36,7 @@ class RouteChooser extends Component<IRouteChooserProps> {
     };
     const newRoutePane = {
       menuItem: "Add Route",
-      render: () => (
-        <RouteViewer
-          accessToken={accessToken}
-          route={newRoute}
-          routeHandler={new CommuteRoute("", "", "", () => undefined)}
-          onRouteChanged={onRouteChanged}
-        />
-      )
+      render: () => <RouteViewer map={map} route={newRoute} onRouteChanged={onRouteChanged} />
     };
     tabPanes.push(newRoutePane);
     return <Tab panes={tabPanes} />;

@@ -5,11 +5,11 @@ import { Label, Input, List, Button } from "semantic-ui-react";
 import IRoute from "../../../../../common/models/iroute";
 import { RouteMap } from "../route-map/route-map";
 import { CommuteRoute } from "../../routes";
+import IMap from "../route-map/imap";
 
 interface IRouteViewerProps {
-  accessToken: string;
+  map: IMap;
   route: IRoute;
-  routeHandler: CommuteRoute;
   onRouteChanged(route: IRoute): void;
 }
 
@@ -19,11 +19,11 @@ class RouteViewer extends Component<IRouteViewerProps> {
   };
 
   public render() {
-    const { accessToken, route } = this.props;
+    const { map, route } = this.props;
     return (
       <div>
         {this.renderRouteDetails()}
-        <RouteMap accessToken={accessToken} route={route} />
+        <RouteMap map={map} route={route} />
       </div>
     );
   }
@@ -76,8 +76,8 @@ class RouteViewer extends Component<IRouteViewerProps> {
   }
 
   private handleUpdateTravelTime = async () => {
-    const { routeHandler } = this.props;
-    routeHandler.requestRoute();
+    const { map, route } = this.props;
+    map.requestDirections(route);
   };
 
   private handleOriginChange = async (route: IRoute, newOrigin: string) => {

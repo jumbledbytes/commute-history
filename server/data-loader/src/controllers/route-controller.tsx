@@ -1,33 +1,36 @@
 import React, { Component } from "react";
 import { LoadingIndicator } from "../components";
-import { RouteMap } from "../components";
 import IRoute from "../../../../common/models/iroute";
-import { CommuteRoute } from "../routes";
 import IDatasource from "../datasources/idatasource";
 import ArangoDatasource from "../datasources/arango-datasource";
 import ITravelTime from "../../../../common/models/itravel-time";
 import RouteChooser from "../components/route-chooser/route-chooser";
-
-declare var mapkit: any;
+import MapSource from "../types/map-source";
+import IMap from "../components/route-map/imap";
+import AppleMap from "../components/route-map/apple-map/apple-map";
+import MapboxMap from "../components/route-map/mapbox-map/mapbox-map";
+import NullMap from "../components/route-map/null-map/null-map";
 
 interface IRouteControllerProps {
+  mapSource: MapSource;
   tokenUrl: string;
 }
 
 interface IRouteControllerState {
   isConnected: boolean;
   isLoading: boolean;
-  accessToken: string;
   routes: Array<IRoute>;
 }
 
 class RouteController extends Component<IRouteControllerProps, IRouteControllerState> {
   public static defaultProps = {
+    mapSource: MapSource.Apple,
     tokenUrl: "http://localhost:4000/token"
   };
 
-  private commuteRoutes: Array<CommuteRoute>;
   private datasource: IDatasource;
+  private map: IMap;
+  private mapTokenUrl: string;
 
   private get isReady() {
     const { isLoading, isConnected } = this.state;
@@ -37,55 +40,66 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
   constructor(props: IRouteControllerProps) {
     super(props);
     this.datasource = new ArangoDatasource();
-    this.commuteRoutes = [];
+    this.mapTokenUrl = "";
+    switch (props.mapSource) {
+      case MapSource.Apple:
+        this.mapTokenUrl = `${props.tokenUrl}/apple`;
+        break;
+      case MapSource.Mapbox:
+        this.mapTokenUrl = `${props.tokenUrl}/mapbox`;
+        break;
+    }
+    this.map = new NullMap();
     this.state = {
       isLoading: true,
       isConnected: false,
-      accessToken: "",
       routes: []
     };
   }
 
   public async componentDidMount() {
-    this.loadAccessToken();
+    this.map = await this.loadMap();
     await this.connectDatasource();
     this.loadRoutes();
   }
 
   public render() {
-    const { accessToken, routes } = this.state;
+    const { routes } = this.state;
     if (!this.isReady) {
       return <LoadingIndicator />;
     }
 
     return (
       <div className="rootChooser">
-        <RouteChooser
-          accessToken={accessToken}
-          routes={routes}
-          routeHandlers={this.commuteRoutes}
-          onRouteChanged={this.handleRouteChanged}
-        />
+        <RouteChooser map={this.map} routes={routes} onRouteChanged={this.handleRouteChanged} />
       </div>
     );
   }
 
-  private async loadAccessToken() {
-    const { tokenUrl } = this.props;
-    if (!window.fetch || !tokenUrl) {
-      return;
+  private async loadMap(): Promise<IMap> {
+    const { mapSource } = this.props;
+    let newMap: IMap = new NullMap();
+    if (!window.fetch || !this.mapTokenUrl) {
+      return newMap;
     }
-    const response = await window.fetch(tokenUrl);
+    const response = await window.fetch(this.mapTokenUrl);
     const token = await response.json();
+    const mapCallbacks = {
+      onMapLoaded: this.handleMapLoaded,
+      onDirectionsAvailable: this.handleDirectionsAvailable
+    };
 
-    mapkit.init({
-      authorizationCallback: (done: (value: string) => undefined) => {
-        done(token.token);
-        this.handleMapLoaded();
-      }
-    });
+    switch (mapSource) {
+      case MapSource.Apple:
+        newMap = new AppleMap(AppleMap.DEFAULT_MAP_NAME, token, mapCallbacks);
+        break;
+      case MapSource.Mapbox:
+        newMap = new MapboxMap(MapboxMap.DEFAULT_MAP_NAME, token, mapCallbacks);
+        break;
+    }
 
-    this.setState({ accessToken: token.token });
+    await newMap.init();
+    return newMap;
   }
 
   private async connectDatasource() {
@@ -105,22 +119,14 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
     const routes = await this.datasource.getRoutes();
     this.setState({ routes }, () => {
       routes.forEach(route => {
-        const commuteRoute = new CommuteRoute(
-          route.routeName,
-          route.origin,
-          route.destination,
-          (error: any, data: any) => {
-            this.handleRouteAvailable(route, error, data);
-          }
-        );
-        commuteRoute.requestRoute();
-        this.commuteRoutes.push(commuteRoute);
-        this.setState({ isLoading: false });
+        this.map.requestDirections(route);
       });
     });
+
+    this.setState({ isLoading: false });
   }
 
-  private handleRouteAvailable = async (route: IRoute, error: any, data: any) => {
+  private handleDirectionsAvailable = async (route: IRoute, error: any, data: any) => {
     console.log(data);
     const routeDocument = await this.datasource.getRoute(route.routeName);
     if (!routeDocument) {

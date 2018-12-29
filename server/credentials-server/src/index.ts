@@ -5,8 +5,10 @@ import { exec } from "child_process";
 
 const mapkitJwtFile = "keys/LittleNorthwestFamilyNavigation.json";
 const arangoCredentialsFile = "keys/commuter-db-credentials.json";
+const mapboxCredenttialsFile = "keys/mapbox.json";
 let mapkitJwt = getCredentials(mapkitJwtFile);
 const arangoCredentials = getCredentials(arangoCredentialsFile);
+const mapboxCredentials = getCredentials(mapboxCredenttialsFile);
 
 const app = express();
 
@@ -20,7 +22,7 @@ app.get("/", (request, response) => {
   response.send("Credentials Server");
 });
 
-app.get("/token", async (request, response) => {
+app.get("/token/apple", async (request, response) => {
   const currentTime = Math.floor(new Date().getTime() / 1000);
   const makkitJwtJson = JSON.parse(mapkitJwt);
   if (makkitJwtJson.expireAt < currentTime - 5) {
@@ -30,7 +32,11 @@ app.get("/token", async (request, response) => {
   response.send(mapkitJwt);
 });
 
-app.get("/credentials", (request, response) => {
+app.get("/token/mapbox", async (request, response) => {
+  response.send(mapboxCredentials);
+});
+
+app.get("/credentials/arangodb", (request, response) => {
   response.send(arangoCredentials);
 });
 
