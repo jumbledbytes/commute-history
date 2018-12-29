@@ -51,6 +51,8 @@ class TravelTimesController extends Component<ITravelTimesControllerProps, ITrav
           const convertedTravelTimes = data.travelTimes.map((travelTime: ITravelTime) => {
             return {
               ...travelTime,
+              routeName: travelTime.route && travelTime.route.routeName,
+              route: travelTime.route,
               createdAt: moment(travelTime.createdAt).toDate()
             };
           });
