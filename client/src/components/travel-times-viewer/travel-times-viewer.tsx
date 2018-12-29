@@ -24,6 +24,14 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
     };
     const now = new Date();
     const sortedDates = travelTimes.sort((a, b) => (a.createdAt > b.createdAt ? 1 : 0));
+    if (sortedDates.length === 0) {
+      sortedDates.push({
+        createdAt: now,
+        travelTime: 0,
+        source: "",
+        routeName: ""
+      });
+    }
     const last10Minutes = travelTimes.filter(
       travelTime => travelTime.createdAt.getTime() >= now.getTime() - 600 * 1000
     );
