@@ -1,0 +1,5 @@
+{
+  "serverUrl": "${window.location.hostname}",
+  "serverUrlRegex": ["traffic", "traffic-data"],
+  "serverPort": -1
+}
