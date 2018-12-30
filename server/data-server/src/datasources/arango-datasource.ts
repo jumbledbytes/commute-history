@@ -88,6 +88,7 @@ class ArangoDatasource implements IDatasource {
       lET travelTimes = (
         FOR vertices, edges, paths IN 1..1 OUTBOUND "${routeKey}" travelTimeEdges
           FILTER DATE_DIFF(vertices.createdAt, DATE_NOW(), 'd', true) < 2.0
+          SORT vertices.createdAt ASC
           return vertices
       )
       

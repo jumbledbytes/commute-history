@@ -23,7 +23,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
       };
     };
     const now = new Date();
-    const sortedDates = travelTimes.sort((a, b) => (a.createdAt > b.createdAt ? 1 : 0));
+    const sortedDates = travelTimes.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
     if (sortedDates.length === 0) {
       sortedDates.push({
         createdAt: now,
@@ -51,7 +51,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
         <div className="travelTimesGrid">
           <Grid columns="equal">
             <Grid.Column>
-              <Header as="h3">Latest: {Math.round(sortedDates[0].travelTime / 60)}</Header>
+              <Header as="h3">Latest: {Math.round(sortedDates.slice(-1)[0].travelTime / 60)}</Header>
             </Grid.Column>
 
             <Grid.Column>
