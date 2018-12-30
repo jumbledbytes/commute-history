@@ -18,12 +18,7 @@ class CommuteRouter extends Component {
     return (
       <Router>
         <Switch>
-          <Route
-            path="/:routeName"
-            render={(props: RenderProps) => {
-              return this.renderRoute(props);
-            }}
-          />
+          <Route path="/:routeName?" render={(props: RenderProps) => this.renderRoute(props)} />
         </Switch>
       </Router>
     );
