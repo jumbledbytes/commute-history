@@ -7,7 +7,9 @@ import { LoadingIndicator } from "../components/loading-indicator/loading-indica
 import CommuteRoutes from "../components/commute-routes/commute-routes";
 import ErrorIndicator from "../components/error-indicator/error-indicator";
 
-interface IRoutesControllerProps {}
+interface IRoutesControllerProps {
+  currentRoute?: string;
+}
 
 interface IRoutesControllerState {}
 
@@ -17,6 +19,7 @@ class RoutesController extends Component<IRoutesControllerProps, IRoutesControll
   }
 
   public render() {
+    const { currentRoute } = this.props;
     return (
       <Query
         query={gql`
@@ -33,7 +36,7 @@ class RoutesController extends Component<IRoutesControllerProps, IRoutesControll
           if (loading) return <LoadingIndicator />;
           if (error) return <ErrorIndicator message={error.message} />;
           if (!data.routes || !data.routes.length) return <ErrorIndicator message="No routes defined" />;
-          return <CommuteRoutes routes={data.routes} />;
+          return <CommuteRoutes routes={data.routes} currentRoute={currentRoute} />;
         }}
       </Query>
     );

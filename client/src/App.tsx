@@ -12,7 +12,7 @@ am4core.useTheme(am4themes_animated);
 
 import "./App.css";
 import ApolloDatasource from "./datasources/apollo-datasource";
-import RoutesController from "./controllers/routes-controller";
+import CommuteRouter from "./routers/commute-router/commute-router";
 
 class App extends Component {
   private datasource: ApolloDatasource;
@@ -25,7 +25,7 @@ class App extends Component {
   public render() {
     return (
       <ApolloProvider client={this.datasource.client}>
-        <RoutesController />
+        <CommuteRouter />
       </ApolloProvider>
     );
   }
