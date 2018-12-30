@@ -1,4 +1,4 @@
-import { Database } from "arangojs";
+import { Database, aql } from "arangojs";
 import * as request from "request-promise";
 
 import IDatasource from "./idatasource";
@@ -79,17 +79,26 @@ class ArangoDatasource implements IDatasource {
       }
     }
     const routeKey = `${ArangoDatasource.ROUTE_COLLECTION_NAME}/${routeName}`;
-    const travelTimesGraph = this.arangoDb.graph("travelTimesGraph");
     try {
-      const travelTimes = await travelTimesGraph.traversal(routeKey, {
-        direction: "outbound",
-        visitor: "result.vertices.push(vertex);",
-        init: "result.vertices = [];"
-      });
-      const route = travelTimes.vertices.find((item: IArangoDocument) => item._key === routeName);
+      const query = ` LET route = (
+        FOR r in routes
+          FILTER r.routeName == "${routeName}"
+          return r
+      )
+      lET travelTimes = (
+        FOR vertices, edges, paths IN 1..1 OUTBOUND "${routeKey}" travelTimeEdges
+          FILTER DATE_DIFF(vertices.createdAt, DATE_NOW(), 'd', true) < 2.0
+          return vertices
+      )
+      
+      return [route, travelTimes]`;
+      const travelTimesCursor = await this.arangoDb.query(query);
+      const travelTimeData = await travelTimesCursor.all();
+      const routes = travelTimeData[0][0];
+      const travelTimes = travelTimeData[0][1];
+      const route = routes[0];
 
-      return travelTimes.vertices
-        .filter((item: IArangoDocument) => item._key !== routeName)
+      return travelTimes
         .map((item: ITravelTime) => {
           return {
             ...item,
