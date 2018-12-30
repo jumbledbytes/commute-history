@@ -17,6 +17,10 @@ class ApolloDatasource {
   }
 
   private getServerUrl() {
+    // For debugging on localhost
+    if (window.location.hostname === "localhost") {
+      return this.defaultServerUrl;
+    }
     let hostname = this.apolloConfig.serverUrl;
     if (hostname === "${window.location.hostname}") {
       hostname = window.location.hostname;

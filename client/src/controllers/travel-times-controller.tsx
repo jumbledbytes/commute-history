@@ -45,7 +45,7 @@ class TravelTimesController extends Component<ITravelTimesControllerProps, ITrav
           }
         `}
       >
-        {({ loading, error, data }) => {
+        {({ loading, error, data, refetch }) => {
           if (loading) return <LoadingIndicator />;
           if (error) return <ErrorIndicator message={error.message} />;
           const convertedTravelTimes = data.travelTimes.map((travelTime: ITravelTime) => {
@@ -56,7 +56,7 @@ class TravelTimesController extends Component<ITravelTimesControllerProps, ITrav
               createdAt: moment(travelTime.createdAt).toDate()
             };
           });
-          return <TravelTimesViewer travelTimes={convertedTravelTimes} />;
+          return <TravelTimesViewer travelTimes={convertedTravelTimes} onUpdate={refetch} />;
         }}
       </Query>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { OperationVariables, ApolloQueryResult } from "apollo-boost";
 
-import { Grid, Header } from "semantic-ui-react";
+import { Button, Grid, Header, Icon } from "semantic-ui-react";
 
 import ITravelTime from "../../../../common/models/itravel-time";
 import TravelTimesChart from "../travel-times-chart/travel-times-chart";
@@ -9,11 +10,12 @@ import "./travel-times-viewer.css";
 
 interface ITravelTimesViewerProps {
   travelTimes: Array<ITravelTime>;
+  onUpdate: (variables?: OperationVariables | undefined) => Promise<ApolloQueryResult<any>>;
 }
 
 class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
   public render() {
-    const { travelTimes } = this.props;
+    const { travelTimes, onUpdate } = this.props;
     const avgReducer = (a: ITravelTime, b: ITravelTime) => {
       return {
         createdAt: now,
@@ -51,19 +53,33 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
         <div className="travelTimesGrid">
           <Grid columns="equal">
             <Grid.Column>
-              <Header as="h3">Latest: {Math.round(sortedDates.slice(-1)[0].travelTime / 60)}</Header>
+              <Header as="h3">
+                <div className="travelTimeHeader">Latest: {Math.round(sortedDates.slice(-1)[0].travelTime / 60)}</div>
+              </Header>
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">10 mins avg: {Math.round(avg10Mins / 60)}</Header>
+              <Header as="h3">
+                <div className="travelTimeHeader">10 mins avg: {Math.round(avg10Mins / 60)}</div>
+              </Header>
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">20 mins avg: {Math.round(avg20Mins / 60)}</Header>
+              <Header className="travelTimeHeader" as="h3">
+                <div className="travelTimeHeader">20 mins avg: {Math.round(avg20Mins / 60)}</div>
+              </Header>
             </Grid.Column>
 
             <Grid.Column>
-              <Header as="h3">30 mins avg: {Math.round(avg30Mins / 60)}</Header>
+              <Header className="travelTimeHeader" as="h3">
+                <div className="travelTimeHeader">30 mins avg: {Math.round(avg30Mins / 60)}</div>
+              </Header>
+            </Grid.Column>
+
+            <Grid.Column>
+              <Button basic size="tiny" onClick={() => onUpdate()}>
+                <Icon name="refresh" />
+              </Button>
             </Grid.Column>
           </Grid>
         </div>
