@@ -16,5 +16,9 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0"
+  },
+  "dependencies": {
+    "@types/chroma-js": "^1.4.1",
+    "chroma-js": "^2.0.2"
   }
 }

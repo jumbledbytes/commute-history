@@ -6,13 +6,19 @@ import { Tab } from "semantic-ui-react";
 
 import IRoute from "../../../../common/models/iroute";
 import TravelTimesController from "../../controllers/travel-times-controller";
+import { ApolloClient } from "apollo-boost";
+import TravelTimesChart from "../travel-times-chart/travel-times-chart";
+
+interface ICommuteRouteState {
+  tabChanged: boolean;
+}
 
 interface ICommuteRoutesProps extends RouteComponentProps {
   routes: Array<IRoute>;
   currentRoute?: string;
 }
 
-class CommuteRoutes extends Component<ICommuteRoutesProps> {
+class CommuteRoutes extends Component<ICommuteRoutesProps, ICommuteRouteState> {
   public static defaultProps = {
     routes: [],
     currentRoute: undefined
@@ -21,6 +27,8 @@ class CommuteRoutes extends Component<ICommuteRoutesProps> {
   private onTabChange = (event: SyntheticEvent, data: any) => {
     const { routes } = this.props;
     this.props.history.push(`/${routes[data.activeIndex].routeName}`);
+
+    TravelTimesChart.chartCounter++;
   };
 
   public render() {
