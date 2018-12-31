@@ -22,6 +22,7 @@
     "@types/react-dom": "^16.0.11",
     "apollo-boost": "^0.1.23",
     "apollo-client": "^2.4.8",
+    "chroma-js": "^2.0.2",
     "graphql": "^14.0.2",
     "moment": "^2.23.0",
     "react": "^16.7.0",
@@ -33,6 +34,7 @@
     "semantic-ui-react": "^0.84.0"
   },
   "devDependencies": {
+    "@types/chroma-js": "^1.4.1",
     "@types/graphql": "^14.0.3",
     "@types/node": "^10.12.18",
     "@types/react": "^16.7.18",
