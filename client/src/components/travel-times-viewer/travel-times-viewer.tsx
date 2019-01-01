@@ -15,7 +15,15 @@ interface ITravelTimesViewerProps {
 
 class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
   public render() {
-    const { travelTimes, onUpdate } = this.props;
+    const now = new Date();
+    const { onUpdate } = this.props;
+    const emptyTravelTime: ITravelTime = {
+      createdAt: now,
+      travelTime: 0,
+      source: "",
+      routeName: ""
+    };
+    const travelTimes = this.props.travelTimes.length > 0 ? this.props.travelTimes : [emptyTravelTime];
     const avgReducer = (a: ITravelTime, b: ITravelTime) => {
       return {
         createdAt: now,
@@ -24,17 +32,8 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
         routeName: a.routeName
       };
     };
-    const now = new Date();
-    const sortedDates = travelTimes.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
-    if (sortedDates.length === 0) {
-      sortedDates.push({
-        createdAt: now,
-        travelTime: 0,
-        source: "",
-        routeName: ""
-      });
-    }
-    const routeName = sortedDates[0].routeName;
+
+    const routeName = travelTimes[0].routeName;
     const last10Minutes = travelTimes.filter(
       travelTime => travelTime.createdAt.getTime() >= now.getTime() - 600 * 1000
     );
@@ -54,7 +53,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
           <Grid columns="equal">
             <Grid.Column>
               <Header as="h3">
-                <div className="travelTimeHeader">Latest: {Math.round(sortedDates.slice(-1)[0].travelTime / 60)}</div>
+                <div className="travelTimeHeader">Latest: {Math.round(travelTimes.slice(-1)[0].travelTime / 60)}</div>
               </Header>
             </Grid.Column>
 
@@ -83,7 +82,7 @@ class TravelTimesViewer extends Component<ITravelTimesViewerProps> {
             </Grid.Column>
           </Grid>
         </div>
-        <TravelTimesChart routeName={routeName} travelTimes={sortedDates} />
+        <TravelTimesChart routeName={routeName} travelTimes={travelTimes} />
       </div>
     );
   }

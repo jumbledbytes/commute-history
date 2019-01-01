@@ -81,12 +81,6 @@ class TravelTimesChart extends Component<TravelTimesChartProps> {
     series.fillOpacity = 0.5;
     series.propertyFields.fill = "color";
 
-    // Make bullets grow on hover
-    var bullet = series.bullets.push(new am4charts.CircleBullet());
-    bullet.circle.strokeWidth = 1;
-    bullet.circle.radius = 2;
-    bullet.circle.fill = am4core.color("#fff");
-
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.lineY.opacity = 0;
     chart.scrollbarX = (new am4charts.XYChartScrollbar() as any) as am4core.Scrollbar;
