@@ -6,8 +6,9 @@ import { Tab } from "semantic-ui-react";
 
 import IRoute from "../../../../common/models/iroute";
 import TravelTimesController from "../../controllers/travel-times-controller";
-import { ApolloClient } from "apollo-boost";
 import TravelTimesChart from "../travel-times-chart/travel-times-chart";
+
+import "./commute-routes.css";
 
 interface ICommuteRouteState {
   tabChanged: boolean;
@@ -42,7 +43,7 @@ class CommuteRoutes extends Component<ICommuteRoutesProps, ICommuteRouteState> {
     });
     return (
       <Tab
-        style={{ height: "90%" }}
+        className="commuteTab"
         panes={tabPanes}
         renderActiveOnly={true}
         activeIndex={routeIndex}
