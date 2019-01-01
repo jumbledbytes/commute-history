@@ -89,4 +89,9 @@ data-loader on port 4002, and the client on port 3000.
 Running a reverse proxy and a firewall to only expose port 3000 (preferably using https) is recommended as this tool does 
 not provide any built in support for SSL.
 
+### Docker
+
+Running with docker is still untested, but to create a docker image that runs all of the service run the following;
+
+`yarn build:docker`
 
