@@ -69,6 +69,31 @@ however currently it only displays the routes data is collected for. The data-lo
 due to some mapping services requiring the browswer provided `window` variable. For data loading the loader is run
 in a headless chrome instance
 
+### Adding Routes
+
+To add routes to retrieve travel times, documents need to be added to the routes collection in Arango database. A route should look like the following:
+
+```json
+{
+  "_key": "Home",
+  "routeName": "Home",
+  "origin": "<origin address>",
+  "destination": "<destination address",
+  "destinationCoordinates": {
+    "latitude": 40.1234,
+    "longitude": -1111.1234
+  },
+  "originCoordinates": {
+    "latitude": 40.2345,
+    "longitude": -1111.2345
+  }
+}
+```
+
+**Note**: The `_key` attribute is the primary key in arango and for convenience should match the `routeName` attribute
+
+Adding the routes via a web admin interface is still a TODO.
+
 ### Scheduling the data loader
 
 The data-loader scheduling is controlled by https://github.com/jumbledbytes/commute-history/blob/master/server/data-loader/scheduler/schedule.json
