@@ -74,6 +74,21 @@ in a headless chrome instance
 The data-loader scheduling is controlled by https://github.com/jumbledbytes/commute-history/blob/master/server/data-loader/scheduler/schedule.json
 Modify this file to fit your needs (and the number of monthly/daily queries allowed by you map provider account)
 
+## Configure the Client
+
+The client needs to be configured to specify the location of the data server it retrieves traffic data from. To configure the client edit:
+
+https://github.com/jumbledbytes/commute-history/blob/master/client/src/datasources/apollo-datasource.json
+```json
+{
+  "serverUrl": "${window.location.hostname}",
+  "serverUrlRegex": ["traffic", "traffic-data"],
+  "serverPort": -1
+}
+```
+
+Replace serverUrl to match the location of the data server, or use `${window.location.hostname}` to use the location of the client. The serverUrlRegex will be used to modify the value of serverUrl. In the above example if `window.location.hostname` is `traffic.mywebsite.com` the serverUrlRegis above will modify this to `traffic-data.mywebsite.com`. If you are using a custom port specify it with `serverPort` or leave it as -1 to use `window.location.port`.
+
 ## Running the services
 
 ### Using the webpack dev server
@@ -87,7 +102,7 @@ This will start the server and client. The credential server will be running on 
 data-loader on port 4002, and the client on port 3000.
 
 Running a reverse proxy and a firewall to only expose port 3000 (preferably using https) is recommended as this tool does 
-not provide any built in support for SSL.
+not provide any built in support for SSL and the credential service will expose any credentials on port 4000.
 
 ### Docker
 
