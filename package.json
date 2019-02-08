@@ -6,9 +6,12 @@
   "author": "Jeff <jeff@jumbledbytes.com>",
   "license": "MIT",
   "scripts": {
+    "configure": "yarn run install:server && yarn run install:client",
     "build": "concurrently \"cd server && yarn build:server\" \"cd client && yarn build\"",
     "build:docker": "docker build -t jumbledbytes/commute-history .",
     "generate-token": "cd server && yarn generate-token",
+    "install:client": "cd client && yarn install",
+    "install:server": "cd server && yarn install:server",
     "load-data": "cd server/data-loader && yarn load-data",
     "start": "concurrently \"yarn start:server\" \"yarn start:client\"",
     "start:server": "cd server && yarn start",
