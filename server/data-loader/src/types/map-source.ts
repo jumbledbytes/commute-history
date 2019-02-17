@@ -1,6 +1,6 @@
 enum MapSource {
-  Apple,
-  Mapbox
+  Apple = "apple",
+  Mapbox = "mapbox"
 }
 
 export default MapSource;

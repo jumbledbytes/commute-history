@@ -8,20 +8,22 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "scheduler:run": "cd scheduler && ts-node scheduler.ts",
-    "load-data": "yarn cypress:run",
+    "load-data": "cd scheduler && ts-node load-routes.ts",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
   "dependencies": {
     "arangojs": "^6.10.0",
+    "node-fetch": "^2.3.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1",
+    "react-scripts": "^2.1.5",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.84.0"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
+    "@types/node-fetch": "^2.1.6",
     "@types/react": "^16.7.17",
     "@types/react-dom": "^16.0.11",
     "cypress": "^3.1.3",

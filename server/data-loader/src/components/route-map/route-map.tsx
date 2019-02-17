@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import "./route-map.css";
 import IRoute from "../../../../../common/models/iroute";
-import IMap from "./imap";
+import IMap from "../../loaders/map/imap";
 
 declare var mapkit: any;
 

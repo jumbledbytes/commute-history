@@ -1,11 +1,12 @@
 import React, { Component, ChangeEvent } from "react";
 
-import { Label, Input, List, Button } from "semantic-ui-react";
+import { Input, List, Button } from "semantic-ui-react";
 
 import IRoute from "../../../../../common/models/iroute";
 import { RouteMap } from "../route-map/route-map";
-import { CommuteRoute } from "../../routes";
-import IMap from "../route-map/imap";
+import IMap from "../../loaders/map/imap";
+import IMapCallbacks from "../../loaders/map/imap-callbacks";
+import IDirections from "../../types/idirections";
 
 interface IRouteViewerProps {
   map: IMap;
@@ -77,7 +78,11 @@ class RouteViewer extends Component<IRouteViewerProps> {
 
   private handleUpdateTravelTime = async () => {
     const { map, route } = this.props;
-    map.requestDirections(route);
+    const callbacks: IMapCallbacks = {
+      onMapLoaded: () => undefined,
+      onDirectionsAvailable: (error: any, data: IDirections) => this.handleSaveNewRoute(route)
+    };
+    map.requestDirections(route, callbacks);
   };
 
   private handleOriginChange = async (route: IRoute, newOrigin: string) => {

@@ -3,8 +3,7 @@ import { Tab } from "semantic-ui-react";
 
 import IRoute from "../../../../../common/models/iroute";
 import RouteViewer from "../route-viewer/route-viewer";
-import { CommuteRoute } from "../../routes";
-import IMap from "../route-map/imap";
+import IMap from "../../loaders/map/imap";
 
 interface IRouteChooserProps {
   map: IMap;

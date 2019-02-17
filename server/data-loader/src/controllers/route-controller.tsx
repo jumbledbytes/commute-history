@@ -6,11 +6,13 @@ import ArangoDatasource from "../datasources/arango-datasource";
 import ITravelTime from "../../../../common/models/itravel-time";
 import RouteChooser from "../components/route-chooser/route-chooser";
 import MapSource from "../types/map-source";
-import IMap from "../components/route-map/imap";
-import AppleMap from "../components/route-map/apple-map/apple-map";
-import MapboxMap from "../components/route-map/mapbox-map/mapbox-map";
-import NullMap from "../components/route-map/null-map/null-map";
+import IMap from "../loaders/map/imap";
+import AppleMap from "../loaders/map/apple-map/apple-map";
+import MapboxMap from "../loaders/map/mapbox-map/mapbox-map";
+import NullMap from "../loaders/map/null-map/null-map";
 import IDirections from "../types/idirections";
+import IMapCallbacks from "../loaders/map/imap-callbacks";
+import DataLoaderConfig from "../config/data-loader-config.json";
 
 interface IRouteControllerProps {
   mapSource: MapSource;
@@ -25,13 +27,15 @@ interface IRouteControllerState {
 
 class RouteController extends Component<IRouteControllerProps, IRouteControllerState> {
   public static defaultProps = {
-    mapSource: MapSource.Mapbox,
+    mapSource: (MapSource as any)[DataLoaderConfig.map.source],
     tokenUrl: "http://localhost:4000/token"
   };
 
   private datasource: IDatasource;
   private map: IMap;
   private mapTokenUrl: string;
+
+  private readonly mapCallbacks: IMapCallbacks;
 
   private get isReady() {
     const { isLoading, isConnected } = this.state;
@@ -50,6 +54,10 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
         this.mapTokenUrl = `${props.tokenUrl}/mapbox`;
         break;
     }
+    this.mapCallbacks = {
+      onMapLoaded: this.handleMapLoaded,
+      onDirectionsAvailable: this.handleDirectionsAvailable
+    };
     this.map = new NullMap();
     this.state = {
       isLoading: true,
@@ -59,8 +67,8 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
   }
 
   public async componentDidMount() {
-    this.map = await this.loadMap();
     await this.connectDatasource();
+    this.map = await this.loadMap();
     this.loadRoutes();
   }
 
@@ -85,20 +93,20 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
     }
     const response = await window.fetch(this.mapTokenUrl);
     const token = await response.json();
-    const mapCallbacks = {
-      onMapLoaded: this.handleMapLoaded,
-      onDirectionsAvailable: this.handleDirectionsAvailable
-    };
 
     switch (mapSource) {
       case MapSource.Apple:
-        newMap = new AppleMap(AppleMap.DEFAULT_MAP_NAME, token, mapCallbacks);
+        newMap = new AppleMap(AppleMap.DEFAULT_MAP_NAME, token, this.datasource);
         break;
       case MapSource.Mapbox:
-        newMap = new MapboxMap(MapboxMap.DEFAULT_MAP_NAME, token, mapCallbacks);
+        newMap = new MapboxMap(
+          MapboxMap.DEFAULT_MAP_NAME,
+          undefined /* will default to using window.fetch */,
+          token,
+          this.datasource
+        );
         break;
     }
-
     await newMap.init();
     return newMap;
   }
@@ -120,7 +128,7 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
     const routes = await this.datasource.getRoutes();
     this.setState({ routes }, () => {
       routes.forEach(route => {
-        this.map.requestDirections(route);
+        this.map.requestDirections(route, this.mapCallbacks);
       });
     });
 
@@ -128,7 +136,6 @@ class RouteController extends Component<IRouteControllerProps, IRouteControllerS
   }
 
   private handleDirectionsAvailable = async (error: any, data: IDirections) => {
-    console.log(data);
     const routeDocument = await this.datasource.getRoute(data.route.routeName);
     if (!routeDocument) {
       this.datasource.createRoute(data.route);

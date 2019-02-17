@@ -3,6 +3,8 @@ import IDatasource from "./idatasource";
 import IRoute from "../../../../common/models/iroute";
 import ITravelTime from "../../../../common/models/itravel-time";
 
+declare var window: any;
+
 class ArangoDatasource implements IDatasource {
   private static readonly ROUTE_COLLECTION_NAME = "routes";
   private static readonly TRAVEL_TIME_COLLECTION_NAME = "travelTimes";
@@ -16,12 +18,13 @@ class ArangoDatasource implements IDatasource {
     this.credentialsUrl = url || this.defaultCredentialsUrl;
   }
 
-  public async connect(): Promise<boolean> {
+  public async connect(fetch?: any): Promise<boolean> {
     if (this.arangoDb) {
       return true;
     }
     try {
-      const response = await window.fetch(this.credentialsUrl);
+      const fetchInstance = fetch || (window && window.fetch);
+      const response = await fetchInstance(this.credentialsUrl);
       const credentials = await response.json();
       const arangoConfig = credentials["arango"];
       this.arangoDb = new Database(arangoConfig.host);
@@ -114,9 +117,12 @@ class ArangoDatasource implements IDatasource {
       savedTravelTime = await travelTimeCollection.save(travelTime);
       const fromKey = `${ArangoDatasource.ROUTE_COLLECTION_NAME}/${travelTime.routeName}`;
       travelTimeEdgeCollection.save({ _from: fromKey, _to: savedTravelTime._id });
-      console.log(`Saved travel time of ${Math.floor(travelTime.travelTime / 60)} for ${travelTime.routeName}`);
+      console.log(
+        new Date().toString() +
+          `: Saved travel time of ${Math.floor(travelTime.travelTime / 60)} for ${travelTime.routeName}`
+      );
     } catch (e) {
-      console.error(`Unable to save travel time for route: ${travelTime.routeName}`, e);
+      console.error(`${new Date().toString()}: Unable to save travel time for route: ${travelTime.routeName}`, e);
     }
 
     return savedTravelTime;
