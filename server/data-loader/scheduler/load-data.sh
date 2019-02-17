@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-cd /home/silveradmin/Projects/commute-history/server/scheduler
+source ~/.bash_profile
+cd $COMMUTE_HISTORY_ROOT/server/data-loader/scheduler
 npx ts-node load-routes.ts
