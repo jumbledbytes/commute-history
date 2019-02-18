@@ -2,4 +2,4 @@
 
 source ~/.bash_profile
 cd $COMMUTE_HISTORY_ROOT/server/data-loader/scheduler
-npx ts-node load-routes.ts
+npx ts-node load-routes.ts | tee >> load-data.log
