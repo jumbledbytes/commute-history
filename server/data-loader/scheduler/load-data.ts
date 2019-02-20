@@ -38,7 +38,12 @@ const loadMapboxData = async () => {
   const map = new MapboxMap(MapboxMap.DEFAULT_MAP_NAME, fetch, token, datasource);
   const routes = await datasource.getRoutes();
   routes.forEach(route => {
-    map.requestDirections(route);
+    console.log(new Date().toString() + ": loading travel times for " + route.routeName);
+    try {
+      map.requestDirections(route);
+    } catch (e) {
+      console.error(new Date().toString() + ": Failed to load travel times for " + route.routeName + ": " + e.message);
+    }
   });
 };
 
