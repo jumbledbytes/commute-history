@@ -96,8 +96,24 @@ Adding the routes via a web admin interface is still a TODO.
 
 ### Scheduling the data loader
 
+#### For Map Providers that need to run in a browser
+
+The Apple Mapkit.js library requires the `window` global variable provided by the browser and as of this writing does not run in node.js. In order to run the data-loader using Apple Maps the script needs to run inside a browser. This is accomplished by running the data loader in a headless chrome session using Cypress to control the session.
+
 The data-loader scheduling is controlled by https://github.com/jumbledbytes/commute-history/blob/master/server/data-loader/scheduler/schedule.json
-Modify this file to fit your needs (and the number of monthly/daily queries allowed by you map provider account)
+Modify this file to fit your needs (and the number of monthly/daily queries allowed by your map provider account)
+
+Executing https://github.com/jumbledbytes/commute-history/blob/master/server/data-loader/scheduler/load-data.sh using Apple Maps will execute `yarn cypress:run` to load data using cypress. The configuration inside of https://github.com/jumbledbytes/commute-history/blob/master/server/data-loader/scheduler/schedule.json will be used to continually load data over time.
+
+#### For Map providers that can run in Node
+
+The commute history tool also supports Mapbox. Mapbox provides a pure REST API for their service and as such it can be run inside of node independent of a web browser. Running https://github.com/jumbledbytes/commute-history/blob/master/server/data-loader/scheduler/load-data.sh with Mapbox set as the Maps provider will do a one time load of travel time data and does not use the schedule.json configuration. To run the scheduler regularly you can add something like the following to your local crontab file:
+
+```shell
+*/4 * * * * /path/to/commute-history/server/data-loader/scheduler/load-data.sh
+```
+
+The above crontabl setting will load data every 4 minutes.
 
 ## Configure the Client
 
